@@ -1,6 +1,7 @@
 # pathfinding
 
 Javascript Pathfinding Experiment
+Demo : https://buzzcloud.com.au/pathfinding/
 
 ### Instructions
 
