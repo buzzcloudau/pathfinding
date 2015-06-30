@@ -1,0 +1,16 @@
+#grid {
+	position: relative;
+	width: 605px;
+	height: 605px;
+}
+.gridBlock {
+	position: absolute;
+	border: 1px solid #999;
+	width:30px;
+	height:30px;
+	font-size: 10px;
+}
+
+body {
+	padding-top: 0;
+}

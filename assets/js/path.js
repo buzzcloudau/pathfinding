@@ -1,7 +1,5 @@
 $(function(){
 
-	// create a grid
-	
 	var   x
 		, y
 		, bounds
@@ -17,15 +15,16 @@ $(function(){
 	var $startBlk;
 	var $endBlk;
 	
-	var wayPoints;
-	
 	var mouseDown = 0;
 	document.body.onmousedown = function() { 
-	  ++mouseDown;
+	  mouseDown = 1;
 	}
 	document.body.onmouseup = function() {
-	  --mouseDown;
+	  mouseDown = 0;
 	}
+	$("#grid").on("mouseenter",function(){
+		mouseDown = 0;
+	});
 	
 	var reset = function() {
 	
@@ -35,7 +34,7 @@ $(function(){
 		
 			for (y = 0; y < bounds; y++) {
 			
-				$("#grid").append("<div id='gridBlock_"+x+"_"+y+"' class='gridBlock' data-wall='0' data-way='0' style='left:"+(x*30)+"px; top:"+(y*30)+"px;'></div>");
+				$("#grid").append("<div id='gridBlock_"+x+"_"+y+"' class='gridBlock' data-wall='0' style='left:"+(x*30)+"px; top:"+(y*30)+"px;'></div>");
 			
 			}
 		}
@@ -73,18 +72,10 @@ $(function(){
 				
 				$blk = $("#gridBlock_"+x+"_"+y);
 									
-				if ($blk.data('wall') == "0" && $blk.data('way') == "0") {
-				
+				if ($blk.data('wall') == "0") {
 					$blk.css("background-color","white");
-				
-				} else if ($blk.data('wall') == "1") {
-					
+				} else {
 					$blk.css("background-color","black");
-					
-				} else if ($blk.data('way') == "1") {
-					
-					$blk.css("background-color","#d9534f");
-					
 				}
 				
 				$blk.html('');
@@ -396,7 +387,7 @@ $(function(){
 		var strX = $startBlk.data("fx");
 		var strY = $startBlk.data("fy");
 		
-		//$endBlk.css('background-color','#39F');
+		$endBlk.css('background-color','#39F');
 		
 		while ( preX != strX || preY != strY ) {
 		
@@ -483,19 +474,11 @@ $(function(){
 		
 		$("#gridBlock_"+pathPos.x+"_"+pathPos.y).css("background-color","orange");
 		
-		if ($("#gridBlock_"+pathPos.x+"_"+pathPos.y).data('way') == 1) {
-			
-			wayPoints.push(pathPos);
-			consone.dir(wayPoints);
-		}
-		
-		
-		
-		//if (pathPos.x != endPos.x || pathPos.y != endPos.y) {
+		if (pathPos.x != endPos.x || pathPos.y != endPos.y) {
 			//setTimeout(function(){
 				findPath3();
 			//},speed);
-		//}
+		}
 		
 	}
 	
@@ -508,31 +491,26 @@ $(function(){
 			
 			$xBlk = $("#gridBlock_"+nextTest[p].x+"_"+nextTest[p].y);
 			
-			/*
 			if (nextTest[p].x == endPos.x && nextTest[p].y == endPos.y) {
 				
 				$xBlk.css("background-color","grey");
 				cont = false;
 				
-			} else */
-			if (nextTest[p].x != startPos.x || nextTest[p].y != startPos.y) {
+			} else if (nextTest[p].x != startPos.x || nextTest[p].y != startPos.y) {
 				
-				if ($xBlk.data('wall') != 1 && $xBlk.data('way') != 1) {
-					$xBlk.css("background-color","rgba(255,255,0,0.3)");			
-				}
+				$xBlk.css("background-color","rgba(255,255,0,0.3)");			
 				
 			}
-			
 			
 			if ( nextTest[p].from !== undefined ) {
 				// $xBlk.html(round + "<br />" + nextTest[p].from.x + ":" + nextTest[p].from.y);	
 				$xBlk.data("fx",""+nextTest[p].from.x);
 				$xBlk.data("fy",""+nextTest[p].from.y);
 			}
-			
+		
 		}
 		
-		if ( nextTest.length > 0 ) { 
+		if ( cont ) { 
 			findNextTest(); 
 		} else { 
 			pathPos = startPos; 
@@ -547,37 +525,28 @@ $(function(){
 		startPos.x = 1;
 		startPos.y = 0;
 		
-		/*
 		endPos = {};
 		endPos.x = 18;
 		endPos.y = 19;
-		*/
 		
 		$startBlk = $("#gridBlock_"+startPos.x+"_"+startPos.y);
-		// $endBlk = $("#gridBlock_"+endPos.x+"_"+endPos.y);
+		$endBlk = $("#gridBlock_"+endPos.x+"_"+endPos.y);
 		
 		$startBlk.css("background-color","green");
 		$startBlk.data("wall","0");
-		/*
-		$endBlk.css("background-color","#d9534f");	
+		$endBlk.css("background-color","red");	
 		$endBlk.data("wall","0");	
-		*/
 	}
 	
 	
 	$('#grid').on('click','.gridBlock',function(){
 	
-		if ($(this).data('wall') == 0 && $(this).data('way') == 0) {
+		if ($(this).data('wall') == 0) {
 			$(this).css('background-color','black');
 			$(this).data('wall',1);
-		} else if ($(this).data('wall') == 1) {
-			$(this).css('background-color','#d9534f');
-			$(this).data('wall',0);
-			$(this).data('way',1);
 		} else {
 			$(this).css('background-color','white');
 			$(this).data('wall',0);
-			$(this).data('way',0);
 		}	
 	
 	});
