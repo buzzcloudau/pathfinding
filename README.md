@@ -1,6 +1,6 @@
 # pathfinding
 
-Javascript Pathfinding Experiment
+JavaScript Pathfinding Experiment <br />
 Demo : https://buzzcloud.com.au/pathfinding/
 
 ### Instructions
